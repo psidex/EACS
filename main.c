@@ -2,6 +2,8 @@
 #define TRAY_WINAPI 1
 #include "tray/tray.h"
 
+static const char BASE_DIR[] = "C:\\Program Files\\EqualizerAPO\\config";
+static const char CONFIG_FILE_DIR[] = "E-APO-Config-Switcher\\E-APO-Config-Files";
 struct tray tray;
 
 void toggle_menu_item(struct tray_menu *item) {
