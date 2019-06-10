@@ -2,6 +2,7 @@
 #include "helpers.h"
 
 static const char config_files_glob[] = "E-APO-Config-Files\\*.txt";
+static const char config_files_base[] = "E-APO-Config-Files\\";
 
 int get_config_file_count() {
     int file_count = 0;
@@ -20,7 +21,7 @@ int get_config_file_count() {
     return file_count;
 }
 
-void populate_config_file_names(char **config_file_names) {
+void populate_e_apo_configs(struct e_apo_config *e_apo_configs) {
     int current_file_number = 0;
     HANDLE hFind;
     WIN32_FIND_DATA data;
@@ -28,8 +29,13 @@ void populate_config_file_names(char **config_file_names) {
     hFind = FindFirstFile(config_files_glob, &data);
     if (hFind != INVALID_HANDLE_VALUE) {
         do {
-            config_file_names[current_file_number] = malloc(FILE_NAME_LEN_LIMIT * sizeof(char));
-            strcpy_s(config_file_names[current_file_number], FILE_NAME_LEN_LIMIT, data.cFileName);
+            char include_text[MAX_INCLUDE_TEXT] = "Include: ";
+            strcat_s(include_text, MAX_FILE_NAME, config_files_base);
+            strcat_s(include_text, MAX_FILE_NAME, data.cFileName);
+
+            strcpy_s(e_apo_configs[current_file_number].file_name, MAX_FILE_NAME, data.cFileName);
+            strcpy_s(e_apo_configs[current_file_number].include_text, MAX_INCLUDE_TEXT, include_text);
+
             current_file_number++;
         } while (FindNextFile(hFind, &data));
         FindClose(hFind);
