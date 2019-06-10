@@ -7,6 +7,12 @@ Due to this being quite a niche app, several things are assumed:
 - This app will be installed in `C:\Program Files\EqualizerAPO\config\E-APO-Config-Switcher`
 - You are not manually editing your Equalizer APO config.txt. if you do it *might* cause errors
 
+## Screenshot
+
+![example](example.png)
+
+*This is a temporary screenshot, there is still a lot to be done*
+
 ## Credits
 
 - [zserge/tray](https://github.com/zserge/tray) to handle the system tray interaction
