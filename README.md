@@ -10,7 +10,7 @@ There are a couple of limitations that come with using this app:
 
 - Download the latest `E-APO-Config-Switcher.zip` from [releases](https://github.com/psidex/E-APO-Config-Switcher/releases/latest)
 - Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
-- Run `E_APO_Config_Switcher.exe` (in the same directory as the install script)
+- Run `E_APO_Config_Switcher.exe` that is now inside `config\E-APO-Config-Switcher`
 - You should now have an icon in your system tray that you can click on
 - If you want it to run on system startup, create a shortcut to the exe and move it to the windows startup directory
 
