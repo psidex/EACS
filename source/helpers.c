@@ -1,8 +1,9 @@
 #include <windows.h>
 #include "helpers.h"
 
-static const char config_files_glob[] = "E-APO-Config-Files\\*.txt";
-static const char config_files_base[] = "E-APO-Config-Files\\";
+const char config_files_glob[] = "E-APO-Config-Files\\*.txt";
+// config_files_base is relative to the master config.txt
+const char config_files_base[] = "E-APO-Config-Switcher\\E-APO-Config-Files\\";
 
 int get_config_file_count() {
     int file_count = 0;
@@ -35,6 +36,7 @@ void populate_e_apo_configs(struct e_apo_config *e_apo_configs) {
 
             strcpy_s(e_apo_configs[current_file_number].file_name, MAX_FILE_NAME, data.cFileName);
             strcpy_s(e_apo_configs[current_file_number].include_text, MAX_INCLUDE_TEXT, include_text);
+            e_apo_configs[current_file_number].checked = 0;
 
             current_file_number++;
         } while (FindNextFile(hFind, &data));

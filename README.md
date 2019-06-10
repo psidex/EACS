@@ -2,16 +2,21 @@
 
 A small Windows app that sits in the tray and allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
 
-Due to this being quite a niche app, several things are assumed:
-- Equalizer APO is installed in `C:\Program Files\EqualizerAPO`
-- This app will be installed in `C:\Program Files\EqualizerAPO\config\E-APO-Config-Switcher`
-- You are not manually editing your Equalizer APO config.txt. if you do it *might* cause errors
+There are a couple of limitations that come with using this app:
+- You cannot manually edit your Equalizer APO configuration. If you do, it will be erased
+- This will not work alongside other configuration programs, such as Peace
+
+## Install
+
+- Download the latest `E-APO-Config-Switcher.zip` from releases
+- Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
+- Run `E_APO_Config_Switcher.exe` (in the same directory as the install script)
+- You should now have an icon in your system tray that you can click on
+- If you want it to run on system startup, create a shortcut to the exe and move it to the windows startup directory
 
 ## Screenshot
 
 ![example](example.png)
-
-*This is a temporary screenshot, there is still a lot to be done*
 
 ## Credits
 

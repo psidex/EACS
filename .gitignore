@@ -1,3 +1,5 @@
+# Ignore generated config.txt
+source/config.txt
 
 # Created by https://www.gitignore.io/api/c,clion
 # Edit at https://www.gitignore.io/?templates=c,clion
