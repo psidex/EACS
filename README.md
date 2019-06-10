@@ -27,7 +27,9 @@ A small Windows app that sits in the tray and allows you to quickly switch betwe
 
 ## Edit / Add / Remove Configurations
 
-Simply copy the configuration text you want and put it in a `.txt` file inside `E-APO-Config-Switcher\E-APO-Config-Files`. If you look in there you will see the configurations that are included with this app
+Simply copy the configuration text you want and put it in a `.txt` file inside `E-APO-Config-Switcher\E-APO-Config-Files`. If you look in there you will also see the configurations that are included with this app
+
+You will need to restart the app if you create / delete any configuration files
 
 ## Credits
 
