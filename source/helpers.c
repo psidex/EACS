@@ -1,8 +1,7 @@
 #include <windows.h>
 #include "helpers.h"
 
-// TODO: Change this to not be here
-static const char config_files_glob[] = "E:\\GitHub-Cloned-Repos\\E-APO-Config-Switcher\\E-APO-Config-Files\\*.txt";
+static const char config_files_glob[] = "E-APO-Config-Files\\*.txt";
 
 int get_config_file_count() {
     int file_count = 0;
