@@ -8,7 +8,7 @@ There are a couple of limitations that come with using this app:
 
 ## Install
 
-- Download the latest `E-APO-Config-Switcher.zip` from releases
+- Download the latest `E-APO-Config-Switcher.zip` from [releases](https://github.com/psidex/E-APO-Config-Switcher/releases/latest)
 - Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
 - Run `E_APO_Config_Switcher.exe` (in the same directory as the install script)
 - You should now have an icon in your system tray that you can click on
