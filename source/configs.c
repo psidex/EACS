@@ -56,6 +56,7 @@ void config_populate_array(struct e_apo_config *e_apo_configs) {
             strcpy_s(e_apo_configs[current_file_number].include_text, MAX_INCLUDE_TEXT, include_text);
             e_apo_configs[current_file_number].checked = 0;
 
+            free(include_text);
             current_file_number++;
         } while (FindNextFile(hFind, &data));
         FindClose(hFind);
