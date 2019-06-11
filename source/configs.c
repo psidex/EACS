@@ -3,13 +3,13 @@
 #include "configs.h"
 
 // Glob to get all config files
-const char config_files_glob[] = "E-APO-Config-Files\\*.txt";
+const char config_files_glob[] = "config-files\\*.txt";
 
 // The master config file that Equalizer APO reads
 const char config_master_path[] = "../config.txt";
 
 // config_files_base is relative to the master config file
-const char config_files_base[] = "E-APO-Config-Switcher\\E-APO-Config-Files\\";
+const char config_files_base[] = "E-APO-Config-Switcher\\config-files\\";
 
 void config_write_to_file(int config_count, struct e_apo_config *e_apo_configs) {
     // For each checked config, write the include_text to the master config file
@@ -24,7 +24,6 @@ void config_write_to_file(int config_count, struct e_apo_config *e_apo_configs) 
 int config_file_count() {
     // https://stackoverflow.com/a/3176223/6396652
     int file_count = 0;
-
     WIN32_FIND_DATA data;
     HANDLE hFind = FindFirstFile(config_files_glob, &data);
     if (hFind != INVALID_HANDLE_VALUE) {
@@ -42,7 +41,8 @@ void config_populate_array(struct e_apo_config *e_apo_configs) {
     HANDLE hFind = FindFirstFile(config_files_glob, &data);
     if (hFind != INVALID_HANDLE_VALUE) {
         do {
-            char *filename_no_ext = data.cFileName;
+            char filename_no_ext[MAX_FILE_NAME];
+            strcpy_s(filename_no_ext, MAX_FILE_NAME, data.cFileName);
             // https://stackoverflow.com/a/1726318/6396652
             // Set the 4th to last char to the end of the string, removing the ".txt"
             // The glob used for FindFirstFile assures this wont break things

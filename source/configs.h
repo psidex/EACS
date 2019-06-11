@@ -2,8 +2,8 @@
 #define E_APO_CONFIG_SWITCHER_CONFIGS_H
 
 #define MAX_FILE_NAME 255
-// Max path len + 9 for "Include: "
-#define MAX_INCLUDE_TEXT 260 + 9
+// Max path len + 9 for "Include: " and + 1 for '\n'
+#define MAX_INCLUDE_TEXT 260 + 10
 
 struct e_apo_config {
     char file_name[MAX_FILE_NAME];

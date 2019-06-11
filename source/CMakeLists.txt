@@ -15,5 +15,5 @@ configure_file(icon.ico ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 # Move config files into binary dir
 # https://stackoverflow.com/a/24311917/6396652
 # TODO: Find method that copies when the dir changes
-file(GLOB E_APO_CONFIG_FILES "E-APO-Config-Files/*.txt")
-file(COPY ${E_APO_CONFIG_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/E-APO-Config-Files)
+file(GLOB E_APO_CONFIG_FILES "config-files/*.txt")
+file(COPY ${E_APO_CONFIG_FILES} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/config-files)
