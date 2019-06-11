@@ -48,7 +48,7 @@ void config_populate_array(struct e_apo_config *e_apo_configs) {
             // The glob used for FindFirstFile assures this wont break things
             filename_no_ext[strlen(filename_no_ext)-4] = 0;
 
-            char *include_text = malloc(MAX_INCLUDE_TEXT * sizeof(char));
+            char include_text[MAX_INCLUDE_TEXT];
             // E-APO doesn't like CR LF, only LF
             sprintf_s(include_text, MAX_INCLUDE_TEXT, "Include: %s%s\n", config_files_base, data.cFileName);
 
@@ -56,7 +56,6 @@ void config_populate_array(struct e_apo_config *e_apo_configs) {
             strcpy_s(e_apo_configs[current_file_number].include_text, MAX_INCLUDE_TEXT, include_text);
             e_apo_configs[current_file_number].checked = 0;
 
-            free(include_text);
             current_file_number++;
         } while (FindNextFile(hFind, &data));
         FindClose(hFind);
