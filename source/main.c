@@ -55,7 +55,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine
     tray_app.icon = "icon.ico";
     tray_app.menu = tray_menu_items;
 
-    // Init and start tray app
     if (tray_init(&tray_app) < 0) {return 1;}
     while (tray_loop(1) == 0) {}
 
