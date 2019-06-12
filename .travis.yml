@@ -1,6 +1,8 @@
 os: windows
 language: c
 compiler: gcc
+before_install:
+  - choco install cmake
 before_script:
   cmake --build source --target E_APO_Config_Switcher
 script:
