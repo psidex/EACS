@@ -1,12 +1,17 @@
-cmake_minimum_required(VERSION 3.13)
 project(E_APO_Config_Switcher C)
+cmake_minimum_required(VERSION 3.13)
 set(CMAKE_C_STANDARD 99)
 
 include_directories(../tray)
 
-# WIN32 = Don't show a console window when running
-# This requires using WinMain instead of main - https://stackoverflow.com/a/13871657/6396652
-add_executable(E_APO_Config_Switcher WIN32 main.c configs.c configs.h)
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+    # Doen't add the WIN32 option so stdout will show in a console
+    add_executable(E_APO_Config_Switcher main.c configs.c configs.h)
+else()
+    # WIN32 = Don't show a console window when running
+    # This requires using WinMain instead of main - https://stackoverflow.com/a/13871657/6396652
+    add_executable(E_APO_Config_Switcher WIN32 main.c configs.c configs.h)
+endif()
 
 # Move icon over to binary dir so it is seen by the bin
 # configure_file means it will copy if it changes

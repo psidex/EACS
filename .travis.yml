@@ -1,0 +1,7 @@
+os: windows
+language: c
+compiler: gcc
+before_script:
+  cmake --build source --target E_APO_Config_Switcher
+script:
+  cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" -S source -B source

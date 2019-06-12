@@ -33,7 +33,7 @@ void tray_menu_populate(struct tray_menu *tray_menu_items) {
     for(int i = 0; i < config_count; i++) {
         // i + 2 as the first 2 indexes are already used
         tray_menu_items[i + 2] = (struct tray_menu) {
-                config_array[i].file_name,
+                config_array[i].name,
                 0,
                 0,
                 config_clicked,

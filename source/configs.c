@@ -49,7 +49,7 @@ void config_populate_array(struct e_apo_config *e_apo_configs) {
             filename_no_ext[strlen(filename_no_ext)-4] = 0;
 
             // Reminder: E-APO doesn't like CR LF, only LF
-            strcpy_s(e_apo_configs[current_file_number].file_name, MAX_FILE_NAME, filename_no_ext);
+            strcpy_s(e_apo_configs[current_file_number].name, MAX_FILE_NAME, filename_no_ext);
             sprintf_s(e_apo_configs[current_file_number].include_text, MAX_INCLUDE_TEXT, "Include: %s%s\n", config_files_base, data.cFileName);
             e_apo_configs[current_file_number].checked = 0;
 

@@ -6,7 +6,7 @@
 #define MAX_INCLUDE_TEXT 260 + 10
 
 struct e_apo_config {
-    char file_name[MAX_FILE_NAME];
+    char name[MAX_FILE_NAME];
     char include_text[MAX_INCLUDE_TEXT];
     int checked;
 };
