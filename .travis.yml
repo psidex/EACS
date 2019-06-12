@@ -4,6 +4,7 @@ compiler: gcc
 before_install:
   - choco install cmake
 before_script:
-  cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" -S source -B source
+  # The CMAKE_SH flag stops the "sh.exe must NOT be in your path" error
+  cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_SH="CMAKE_SH-NOTFOUND" -G "CodeBlocks - MinGW Makefiles" -S source -B source
 script:
   cmake --build source --target E_APO_Config_Switcher
