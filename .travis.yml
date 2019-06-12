@@ -4,6 +4,6 @@ compiler: gcc
 before_install:
   - choco install cmake
 before_script:
-  cmake --build source --target E_APO_Config_Switcher
-script:
   cmake -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" -S source -B source
+script:
+  cmake --build source --target E_APO_Config_Switcher
