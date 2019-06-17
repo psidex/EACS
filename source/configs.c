@@ -6,19 +6,19 @@
 const char config_files_glob[] = "config-files\\*.txt";
 
 // The master config file that Equalizer APO reads
-const char config_master_path[] = "../config.txt";
+const char config_file_path[] = "../config.txt";
 
 // config_files_base is relative to the master config file
 const char config_files_base[] = "E-APO-Config-Switcher\\config-files\\";
 
 void config_write_to_file(int config_count, struct e_apo_config *e_apo_configs) {
+    // TODO: Handle file stream being NULL
+    FILE *config_file = fopen(config_file_path, "w");
     // For each checked config, write the include_text to the master config file
-    // TODO: Switch to fopen_s?, handle err
-    FILE *fp = fopen(config_master_path, "w");
     for(int i = 0; i < config_count; i++) {
-        if (e_apo_configs[i].checked) fputs(e_apo_configs[i].include_text, fp);
+        if (e_apo_configs[i].checked) fputs(e_apo_configs[i].include_text, config_file);
     }
-    fclose(fp);
+    fclose(config_file);
 }
 
 int config_file_count() {

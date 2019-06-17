@@ -1,7 +1,7 @@
 # E-APO-Config-Switcher
 
-![travis-build](https://travis-ci.com/psidex/E-APO-Config-Switcher.svg?branch=master)
-![license](https://img.shields.io/github/license/psidex/E-APO-Config-Switcher.svg)
+[![Build Status](https://travis-ci.com/psidex/E-APO-Config-Switcher.svg?branch=master)](https://travis-ci.com/psidex/E-APO-Config-Switcher)
+[![license](https://img.shields.io/github/license/psidex/E-APO-Config-Switcher.svg)](LICENSE)
 
 A small Windows app that sits in the tray and allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
 
@@ -15,10 +15,8 @@ A small Windows app that sits in the tray and allows you to quickly switch betwe
 
 ## Warnings
 
-*Both of these will be fixed in a future release*
-
-- This will erase any configuration you currently have (and will continue to erase any changes you make to `config.txt`)
-- This will not work alongside other configuration programs, such as Peace
+- This won't work alongside other configuration programs such as Peace or the default configuration program that comes with Equalizer APO
+- This will overwrite Equalizer APO's `config.txt`. Make a backup if you need to!
 
 ## Install
 
@@ -30,9 +28,39 @@ A small Windows app that sits in the tray and allows you to quickly switch betwe
 
 ## Edit / Add / Remove Configurations
 
-Simply copy the configuration text you want and put it in a `.txt` file inside `E-APO-Config-Switcher\config-files`. If you look in there you will also see the configurations that are included with this app
+The configuration folder (the folder that contains all the configuration files) is located at `EqualizerAPO\config\E-APO-Config-Switcher\config-files`
 
-You will need to restart the app if you create / delete any configuration files
+### Adding your own config
+
+Let's say you have this configuration for Equalizer APO:
+
+```
+Channel: all
+Preamp: -2.5 dB
+Filter 1: ON LS Fc 500 Hz Gain 5 dB
+```
+
+and you want to call the configuration `My Config`
+
+Copy the config text (shown above) and place in a file named `My Config.txt`
+
+Move this file into the configuration folder
+
+Restart E-APO-Config-Switcher and you will see your new configuration appear in the list
+
+### Editing a config
+
+Find the `.txt` in the configuration folder of the config you want to edit
+
+Open the file and edit the text how you want
+
+Once you save the file, un-check (if it was previously checked) and check the configuration in E-APO-Config-Switcher and your new configuration will be applied
+
+### Remove a config
+
+To remove a config all you have to do is delete the `.txt` file associated with that configuration
+
+Restart E-APO-Config-Switcher and you will see the configuration does not appear in the list anymore
 
 ## Credits
 

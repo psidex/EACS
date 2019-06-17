@@ -1,4 +1,4 @@
-# Ignore generated config.txt
+# Ignore generated config files
 source/config.txt
 
 # Created by https://www.gitignore.io/api/c,clion

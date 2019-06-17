@@ -1,4 +1,3 @@
-#include <stdio.h>
 #define TRAY_WINAPI 1
 #include "tray.h"
 #include "configs.h"
