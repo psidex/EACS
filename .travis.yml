@@ -1,7 +1,7 @@
 os: windows
 language: c
 compiler: gcc
-before_install:
+install:
   - choco install cmake
 script:
   - mkdir cmake-build
