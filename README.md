@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.com/psidex/E-APO-Config-Switcher.svg?branch=master)](https://travis-ci.com/psidex/E-APO-Config-Switcher)
 [![license](https://img.shields.io/github/license/psidex/E-APO-Config-Switcher.svg)](LICENSE)
 
-A small Windows app that sits in the tray and allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
+A small Windows tray app that allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
 
 ![screenshot](screenshot.png)
 
