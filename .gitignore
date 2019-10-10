@@ -44,4 +44,4 @@ crashlytics-build.properties
 fabric.properties
 
 # GoLand settings
-.idea
+.idea/
