@@ -1,11 +1,11 @@
 package main
 
-// go build -o ./E-APO-Config-Switcher.exe github.com/psidex/E-APO-Config-Switcher/E-APO-Config-Switcher
+// go build -o E-APO-Config-Switcher.exe github.com/psidex/E-APO-Config-Switcher
 
 import (
 	"fmt"
 	"github.com/getlantern/systray"
-	"github.com/psidex/E-APO-Config-Switcher/E-APO-Config-Switcher/icon"
+	"github.com/psidex/E-APO-Config-Switcher/icon"
 	"io/ioutil"
 )
 
