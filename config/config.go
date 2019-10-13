@@ -4,6 +4,7 @@ import (
 	"github.com/getlantern/systray"
 	"io/ioutil"
 	"os"
+	"strings"
 )
 
 const configFileDir = "./config-files/"
@@ -25,8 +26,10 @@ func configStructFromFile(file os.FileInfo) (EApoConfig, error) {
 		return EApoConfig{}, err
 	}
 
+	configName := strings.Replace(fileName, ".txt", "", 1)
+
 	return EApoConfig{
-		Name: fileName,
+		Name: configName,
 		Data: dat,
 	}, nil
 }
