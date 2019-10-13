@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 	"strings"
+	"tawesoft.co.uk/go/dialog"
 )
 
 const configFileDir = "./config-files/"
@@ -40,7 +41,8 @@ func CreateConfigSlice() []*EApoConfig {
 
 	files, err := ioutil.ReadDir(configFileDir)
 	if err != nil {
-		// Can't read config file directory, so can't do anything else.
+		dialog.Alert("E-APO Config Error", "Cannot read config file directory: "+configFileDir)
+		// Can't do anything else.
 		os.Exit(1)
 	}
 
@@ -71,8 +73,7 @@ func WriteConfigToMaster(configSlice []*EApoConfig) {
 
 	err := ioutil.WriteFile(configFileMaster, completeData, 0644)
 	if err != nil {
-		// Can't write to configFileMaster.
-		// TODO: Maybe show an error, or log it somehow?
+		dialog.Alert("E-APO Config Error", "Cannot write to master config file: "+configFileMaster)
 		os.Exit(1)
 		return
 	}
