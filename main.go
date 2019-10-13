@@ -34,6 +34,9 @@ func onReady() {
 		}()
 	}
 
+	blank := systray.AddMenuItem("", "")
+	blank.Disable()
+
 	QuitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
 	go func() {
 		for {

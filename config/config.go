@@ -49,6 +49,7 @@ func CreateConfigSlice() []*EApoConfig {
 	for _, file := range files {
 		if !file.IsDir() {
 			configStruct, err := configStructFromFile(file)
+			// Ignore files that cause err.
 			if err == nil {
 				configSlice = append(configSlice, &configStruct)
 			}
