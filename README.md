@@ -64,5 +64,4 @@ Restart E-APO-Config-Switcher and you will see the configuration does not appear
 
 ## Credits
 
-- [zserge/tray](https://github.com/zserge/tray) to handle the system tray interaction
 - Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extension/)
