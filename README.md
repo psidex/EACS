@@ -1,7 +1,7 @@
-# Equalizer APO Config Switcher
+# EACS - Equalizer APO Config Switcher
 
-[![Build Status](https://github.com/psidex/E-APO-Config-Switcher/workflows/Go%20Build/badge.svg)](https://github.com/psidex/E-APO-Config-Switcher/actions)
-[![license](https://img.shields.io/github/license/psidex/E-APO-Config-Switcher.svg)](./LICENSE)
+[![Build Status](https://github.com/psidex/EACS/workflows/Go%20Build/badge.svg)](https://github.com/psidex/EACS/actions)
+[![license](https://img.shields.io/github/license/psidex/EACS.svg)](./LICENSE)
 
 A small Windows tray app that allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
 
@@ -22,7 +22,7 @@ Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extensi
 
 ## Install
 
-- Download the latest `E-APO-Config-Switcher.zip` from [releases](https://github.com/psidex/E-APO-Config-Switcher/releases/latest)
+- Download the latest `E-APO-Config-Switcher.zip` from [releases](https://github.com/psidex/EACS/releases/latest)
 - Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
 - Run `E_APO_Config_Switcher.exe` that is now inside `config\E-APO-Config-Switcher`
 - You should now have the icon in your system tray, you can now left/right click on it to switch configurations
