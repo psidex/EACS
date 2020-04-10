@@ -41,7 +41,7 @@ func CreateConfigSlice() []*EApoConfig {
 
 	files, err := ioutil.ReadDir(configFileDir)
 	if err != nil {
-		dialog.Alert("E-APO Config Error", "Cannot read config file directory: "+configFileDir)
+		dialog.Alert("EACS Config Error", "Cannot read config file directory: "+configFileDir)
 		// Can't do anything else.
 		os.Exit(1)
 	}
@@ -74,7 +74,7 @@ func WriteConfigToMaster(configSlice []*EApoConfig) {
 
 	err := ioutil.WriteFile(configFileMaster, completeData, 0644)
 	if err != nil {
-		dialog.Alert("E-APO Config Error", "Cannot write to master config file: "+configFileMaster)
+		dialog.Alert("EACS Config Error", "Cannot write to master config file: "+configFileMaster)
 		os.Exit(1)
 		return
 	}

@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/getlantern/systray"
-	"github.com/psidex/E-APO-Config-Switcher/config"
-	"github.com/psidex/E-APO-Config-Switcher/icon"
+	"github.com/psidex/EACS/config"
+	"github.com/psidex/EACS/icon"
 )
 
 func main() {
@@ -12,8 +12,8 @@ func main() {
 
 func onReady() {
 	systray.SetIcon(icon.Data)
-	systray.SetTitle("E-APO Config Switcher")
-	systray.SetTooltip("E-APO Config Switcher")
+	systray.SetTitle("Equalizer APO Config Switcher")
+	systray.SetTooltip("Equalizer APO Config Switcher")
 
 	configSlice := config.CreateConfigSlice()
 
