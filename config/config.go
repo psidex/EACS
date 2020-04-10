@@ -5,6 +5,7 @@ import (
 	"github.com/getlantern/systray"
 	"io/ioutil"
 	"os"
+	"strings"
 	"tawesoft.co.uk/go/dialog"
 )
 
@@ -17,14 +18,17 @@ type EApoConfig struct {
 	MenuItem *systray.MenuItem
 }
 
+func fatalError(errMsg string) {
+	dialog.Alert("EACS Fatal Error", errMsg)
+	os.Exit(1)
+}
+
 func CreateConfigSlice() []*EApoConfig {
 	var configSlice []*EApoConfig
 
 	files, err := ioutil.ReadDir(configFileDir)
 	if err != nil {
-		errMsg := fmt.Sprintf("Cannot read config file directory: %s", configFileDir)
-		dialog.Alert("EACS Config Error", errMsg)
-		os.Exit(1)
+		fatalError("Cannot read EACS config file directory")
 	}
 
 	for _, file := range files {
@@ -51,8 +55,28 @@ func WriteConfigToMaster(configSlice []*EApoConfig) {
 
 	err := ioutil.WriteFile(configFileMaster, completeData, 0644)
 	if err != nil {
-		errMsg := fmt.Sprintf("Cannot write to master config file: %s", configFileMaster)
-		dialog.Alert("EACS Config Error", errMsg)
-		os.Exit(1)
+		fatalError("Cannot write to master config file")
 	}
+}
+
+func ReadConfigFromMaster() []string {
+	var currentConfigFileNames []string
+
+	includes, err := ioutil.ReadFile(configFileMaster)
+	if err != nil {
+		fatalError("Cannot read from master config file")
+	}
+
+	lines := strings.Split(string(includes), "\n")
+
+	for _, line := range lines {
+
+		parts := strings.Split(line, "\\")
+		fileName := parts[len(parts)-1]
+
+		currentConfigFileNames = append(currentConfigFileNames, fileName)
+
+	}
+
+	return currentConfigFileNames
 }

@@ -7,8 +7,15 @@ import (
 	"strings"
 )
 
-func main() {
-	systray.Run(onReady, onExit)
+// Find takes a slice and looks for an element in it. If found it will return true, else false.
+// https://golangcode.com/check-if-element-exists-in-slice/
+func find(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }
 
 func onReady() {
@@ -17,11 +24,17 @@ func onReady() {
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
 	configSlice := config.CreateConfigSlice()
+	currentConfigFileNames := config.ReadConfigFromMaster()
 
 	for _, configStruct := range configSlice {
 		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
 		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
 		configStruct.MenuItem = btn
+
+		// If this config is already in the config master file
+		if find(currentConfigFileNames, configStruct.FileName) {
+			btn.Check()
+		}
 
 		go func() {
 			for {
@@ -46,8 +59,13 @@ func onReady() {
 			systray.Quit()
 		}
 	}()
+
 }
 
 func onExit() {
 	// No cleanup needed
+}
+
+func main() {
+	systray.Run(onReady, onExit)
 }
