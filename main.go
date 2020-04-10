@@ -4,6 +4,7 @@ import (
 	"github.com/getlantern/systray"
 	"github.com/psidex/EACS/config"
 	"github.com/psidex/EACS/icon"
+	"strings"
 )
 
 func main() {
@@ -18,7 +19,8 @@ func onReady() {
 	configSlice := config.CreateConfigSlice()
 
 	for _, configStruct := range configSlice {
-		btn := systray.AddMenuItem(configStruct.Name, "Activate / Deactivate this config")
+		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
+		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
 		configStruct.MenuItem = btn
 
 		go func() {

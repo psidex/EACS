@@ -22,14 +22,14 @@ Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extensi
 
 ## Install
 
-- Download the latest `E-APO-Config-Switcher.zip` from [releases](https://github.com/psidex/EACS/releases/latest)
+- Download the latest `EACS.zip` from [releases](https://github.com/psidex/EACS/releases/latest)
 - Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
-- Run `E_APO_Config_Switcher.exe` that is now inside `config\E-APO-Config-Switcher`
+- Run `EACS.exe` that is now inside `config\EACS`
 - You should now have the icon in your system tray, you can now left/right click on it to switch configurations
 - If you want it to run on system startup, create a shortcut to the exe and move it to the Windows startup directory
 
 ## Edit / Add / Remove Configurations
 
-The folder that contains all the configuration files will be located at `EqualizerAPO\config\E-APO-Config-Switcher\config-files`
+The folder that contains all the configuration files will be located at `EqualizerAPO\config\EACS\config-files`
 
 See [the user guide](./GUIDE.md) for more detailed information
