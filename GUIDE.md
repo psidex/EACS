@@ -18,13 +18,13 @@ Create a file in `config-files` names `My Config.txt`
 
 Copy the configuration text and paste it into `My Config.txt`
 
-Restart EACS and you will see your new configuration appear in the list
+Restart EACS and you will see your new configuration appear in the list as "My Config"
 
 ## Editing a config
 
 Simply find the `.txt` in the configuration folder of the config you want to edit, open the file and edit the text how you want
 
-Once you save the file, you can click on it in EACS and your new configuration will be applied. If it was previously checked, just un-check and then check it again.
+Once you save the file, you can click on it in EACS and your new configuration will be applied. If it was previously checked, you might have to un-check and then check it again.
 
 ## Remove a config
 
