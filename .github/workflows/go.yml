@@ -28,5 +28,11 @@ jobs:
     - name: Get rsrc tool
       run: go get github.com/akavel/rsrc
 
-    - name: Build
-      run: ./build.ps1
+#    - name: Build
+#      run: ./build.ps1
+
+    - name: test
+      run: rsrc -manifest EACS.manifest -ico icon\icon.ico -o EACS.syso
+
+    - name: test2
+      run: go build -ldflags -H=windowsgui -v .
