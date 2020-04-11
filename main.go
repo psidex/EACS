@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/getlantern/systray"
-	"github.com/psidex/EACS/config"
 	"github.com/psidex/EACS/icon"
 	"strings"
 )
@@ -23,8 +22,8 @@ func onReady() {
 	systray.SetTitle("Equalizer APO Config Switcher")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
-	configSlice := config.CreateConfigSlice()
-	currentConfigFileNames := config.ReadConfigFromMaster()
+	configSlice := CreateConfigSlice()
+	currentConfigFileNames := ReadConfigFromMaster()
 
 	for _, configStruct := range configSlice {
 		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
@@ -44,7 +43,7 @@ func onReady() {
 				} else {
 					btn.Uncheck()
 				}
-				config.WriteConfigToMaster(configSlice)
+				WriteConfigToMaster(configSlice)
 			}
 		}()
 	}

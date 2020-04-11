@@ -23,8 +23,10 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
+      run: go get -v -t -d ./...
+
+    - name: Get rsrc tool
+      run: go get github.com/akavel/rsrc
 
     - name: Build
-      run: go build -ldflags -H=windowsgui -v .
+      run: ./build.ps1

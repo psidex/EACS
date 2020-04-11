@@ -1,4 +1,4 @@
-package config
+package main
 
 import (
 	"fmt"
@@ -19,7 +19,7 @@ type EApoConfig struct {
 }
 
 func fatalError(errMsg string) {
-	dialog.Alert("EACS Fatal Error", errMsg)
+	dialog.Alert(fmt.Sprintf("EACS Fatal Error\n%s", errMsg))
 	os.Exit(1)
 }
 
