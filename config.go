@@ -19,7 +19,7 @@ type EApoConfig struct {
 }
 
 func fatalError(errMsg string) {
-	dialog.Alert(fmt.Sprintf("EACS Fatal Error\n%s", errMsg))
+	dialog.Alert("EACS Fatal Error\n%s", errMsg)
 	os.Exit(1)
 }
 
