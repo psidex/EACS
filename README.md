@@ -11,7 +11,8 @@ Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extensi
 
 ## Features
 
-- Easily enable and disable configurations
+- Right click on the tray icon to bring up the menu
+- Enable and disable configurations by clicking them (you can have as many enabled as you want)
 - Edit, add, and remove configurations just by changing `.txt` files
 - Everything happens in the system tray, keeping things simple
 
