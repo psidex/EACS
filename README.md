@@ -27,7 +27,7 @@ Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extensi
 - Extract it to `<Equalizer APO install location>\EqualizerAPO\config`
 - Run `EACS.exe` that is now inside `config\EACS`
 - You should now have the icon in your system tray, you can now left/right click on it to switch configurations
-- If you want it to run on system startup, create a shortcut to the exe and move it to the Windows startup directory
+- If you want it to run on system startup, create a shortcut to the exe and move it to the Windows startup directory (`%USERPROFILE%\Start Menu\Programs\Startup`)
 
 ## Edit / Add / Remove Configurations
 
