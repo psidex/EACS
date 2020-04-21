@@ -1,7 +1,6 @@
 # Generate a syso file - https://github.com/getlantern/systray#windows
-# This is needed as systray started using lxn/walk somewhere, which requires using a manifest file
-rsrc -manifest EACS.manifest -ico icon\icon.ico -o EACS.syso
+# This is needed as systray uses lxn/walk which requires using a manifest file
+rsrc -manifest .\EACS.manifest -ico .\internal\icon\icon.ico -o .\cmd\EACS\EACS.syso
 
-# Build (automatically includes *.syso files in the current directory)
-# "-s -w" removes debugging stuff
-go build -ldflags "-s -w -H=windowsgui" -v .
+# Have to target cmd\EACS and not cmd\EACS\main.go so `go build` sees the syso file
+go build -ldflags "-s -w -H=windowsgui" -o .\EACS.exe -v .\cmd\EACS

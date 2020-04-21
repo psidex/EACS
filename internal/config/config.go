@@ -1,4 +1,4 @@
-package main
+package config
 
 import (
 	"fmt"
@@ -9,24 +9,25 @@ import (
 	"tawesoft.co.uk/go/dialog"
 )
 
-const configFileDir = "./config-files/"
-const configFileMaster = "../config.txt"
 const includeText = "Include: EACS\\config-files\\%s"
 
+// EApoConfig holds the name of the file that contains the config, and the associated menu item in the tray
 type EApoConfig struct {
 	FileName string
 	MenuItem *systray.MenuItem
 }
 
+// fatalError shows an alert box to the user and exits the program with code 1
 func fatalError(errMsg string) {
 	dialog.Alert("EACS Fatal Error\n%s", errMsg)
 	os.Exit(1)
 }
 
-func CreateConfigSlice() []*EApoConfig {
+// GetUserConfigs takes a path to a directory and reads all the config files located there into EApoConfig structs
+func GetUserConfigs(userConfigPath string) []*EApoConfig {
 	var configSlice []*EApoConfig
 
-	files, err := ioutil.ReadDir(configFileDir)
+	files, err := ioutil.ReadDir(userConfigPath)
 	if err != nil {
 		fatalError("Cannot read EACS config file directory")
 	}
@@ -41,7 +42,8 @@ func CreateConfigSlice() []*EApoConfig {
 	return configSlice
 }
 
-func WriteConfigToMaster(configSlice []*EApoConfig) {
+// WriteEAPOConfigToFile takes a path to the Equalizer APO config file and a slice of EApoConfig structs to write there
+func WriteEAPOConfigToFile(pathToConfigFile string, configSlice []*EApoConfig) {
 	var completeData []byte
 	newline := []byte("\n")
 
@@ -53,16 +55,17 @@ func WriteConfigToMaster(configSlice []*EApoConfig) {
 		}
 	}
 
-	err := ioutil.WriteFile(configFileMaster, completeData, 0644)
+	err := ioutil.WriteFile(pathToConfigFile, completeData, 0644)
 	if err != nil {
 		fatalError("Cannot write to master config file")
 	}
 }
 
-func ReadConfigFromMaster() []string {
+// ReadEAPOConfigFromFile takes a path to the Equalizer APO config file and reads the names of the currently included config files
+func ReadEAPOConfigFromFile(pathToConfigFile string) []string {
 	var currentConfigFileNames []string
 
-	includes, err := ioutil.ReadFile(configFileMaster)
+	includes, err := ioutil.ReadFile(pathToConfigFile)
 	if err != nil {
 		fatalError("Cannot read from master config file")
 	}

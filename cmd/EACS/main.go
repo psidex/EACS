@@ -2,36 +2,32 @@ package main
 
 import (
 	"github.com/getlantern/systray"
-	"github.com/psidex/EACS/icon"
+	"github.com/psidex/EACS/internal/config"
+	"github.com/psidex/EACS/internal/icon"
+	"github.com/psidex/EACS/internal/util"
 	"strings"
+	"sync"
 )
-
-// Find takes a slice and looks for an element in it. If found it will return true, else false.
-// https://golangcode.com/check-if-element-exists-in-slice/
-func find(slice []string, val string) bool {
-	for _, item := range slice {
-		if item == val {
-			return true
-		}
-	}
-	return false
-}
 
 func onReady() {
 	systray.SetIcon(icon.Data)
 	systray.SetTitle("Equalizer APO Config Switcher")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
-	configSlice := CreateConfigSlice()
-	currentConfigFileNames := ReadConfigFromMaster()
+	userConfigFileDir := ".\\config-files"
+	masterConfigFilePath := "..\\config.txt"
 
-	for _, configStruct := range configSlice {
+	configWriteMutex := sync.Mutex{}
+	userConfigs := config.GetUserConfigs(userConfigFileDir)
+	currentConfigFileNames := config.ReadEAPOConfigFromFile(masterConfigFilePath)
+
+	for _, configStruct := range userConfigs {
 		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
 		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
 		configStruct.MenuItem = btn
 
 		// If this config is already in the config master file
-		if find(currentConfigFileNames, configStruct.FileName) {
+		if util.Find(currentConfigFileNames, configStruct.FileName) {
 			btn.Check()
 		}
 
@@ -43,13 +39,14 @@ func onReady() {
 				} else {
 					btn.Uncheck()
 				}
-				WriteConfigToMaster(configSlice)
+				configWriteMutex.Lock()
+				config.WriteEAPOConfigToFile(masterConfigFilePath, userConfigs)
+				configWriteMutex.Unlock()
 			}
 		}()
 	}
 
 	systray.AddSeparator()
-
 	QuitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
 	go func() {
 		for {
