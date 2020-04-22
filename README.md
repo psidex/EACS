@@ -3,7 +3,7 @@
 [![Build status](https://github.com/psidex/EACS/workflows/Go%20Build/badge.svg)](https://github.com/psidex/EACS/actions)
 [![license](https://img.shields.io/github/license/psidex/EACS.svg)](./LICENSE)
 [![Ko-fi donate link](https://img.shields.io/badge/Ko--fi-Donate-orange.svg?style=flat&colorA=35383d)](https://ko-fi.com/M4M18XB1)
-    
+
 A small Windows tray app that allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files
 
 Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extension/)
