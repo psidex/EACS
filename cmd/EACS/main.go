@@ -10,7 +10,7 @@ import (
 )
 
 func onReady() {
-	systray.SetIcon(icon.Data)
+	systray.SetIcon(icon.DataActive)
 	systray.SetTitle("Equalizer APO Config Switcher")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
