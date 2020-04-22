@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/getlantern/systray"
+	"github.com/psidex/EACS/internal/actions"
 	"github.com/psidex/EACS/internal/config"
 	"github.com/psidex/EACS/internal/icon"
 	"github.com/psidex/EACS/internal/util"
@@ -14,12 +15,9 @@ func onReady() {
 	systray.SetTitle("EACS")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
-	userConfigFileDir := ".\\config-files"
-	masterConfigFilePath := "..\\config.txt"
-
-	configWriteMutex := sync.Mutex{}
-	userConfigs := config.GetUserConfigs(userConfigFileDir)
-	currentConfigFileNames := config.ReadEAPOConfigFromFile(masterConfigFilePath)
+	configWriteMutex := &sync.Mutex{}
+	userConfigs := config.GetUserConfigs()
+	currentConfigFileNames := config.ReadEAPOConfigFromFile()
 	startedWithActiveConfigs := false
 
 	for _, configStruct := range userConfigs {
@@ -36,14 +34,7 @@ func onReady() {
 		go func() {
 			for {
 				<-btn.ClickedCh
-				if !btn.Checked() {
-					btn.Check()
-				} else {
-					btn.Uncheck()
-				}
-				configWriteMutex.Lock()
-				config.WriteEAPOConfigToFile(masterConfigFilePath, userConfigs)
-				configWriteMutex.Unlock()
+				actions.ButtonClicked(btn, configWriteMutex, userConfigs)
 			}
 		}()
 	}
