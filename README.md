@@ -34,3 +34,7 @@ Inspired by [Peace](https://sourceforge.net/projects/peace-equalizer-apo-extensi
 The folder that contains all the configuration files will be located at `EqualizerAPO\config\EACS\config-files`
 
 See [the user guide](./GUIDE.md) for more detailed information
+
+# Credit
+
+Icon(s) from [Twitter](https://twemoji.twitter.com/)

@@ -31,6 +31,7 @@ func onReady() {
 			btn.Check()
 		}
 
+		// ToDo: Change systray icon if any configs are active
 		go func() {
 			for {
 				<-btn.ClickedCh
