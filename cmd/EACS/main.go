@@ -10,8 +10,8 @@ import (
 )
 
 func onReady() {
-	systray.SetIcon(icon.DataActive)
-	systray.SetTitle("Equalizer APO Config Switcher")
+	systray.SetIcon(icon.DataInactive)
+	systray.SetTitle("EACS")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
 	userConfigFileDir := ".\\config-files"
@@ -20,6 +20,7 @@ func onReady() {
 	configWriteMutex := sync.Mutex{}
 	userConfigs := config.GetUserConfigs(userConfigFileDir)
 	currentConfigFileNames := config.ReadEAPOConfigFromFile(masterConfigFilePath)
+	startedWithActiveConfigs := false
 
 	for _, configStruct := range userConfigs {
 		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
@@ -29,9 +30,9 @@ func onReady() {
 		// If this config is already in the config master file
 		if util.Find(currentConfigFileNames, configStruct.FileName) {
 			btn.Check()
+			startedWithActiveConfigs = true
 		}
 
-		// ToDo: Change systray icon if any configs are active
 		go func() {
 			for {
 				<-btn.ClickedCh
@@ -47,6 +48,10 @@ func onReady() {
 		}()
 	}
 
+	if startedWithActiveConfigs == true {
+		systray.SetIcon(icon.DataActive)
+	}
+
 	systray.AddSeparator()
 	QuitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
 	go func() {
@@ -55,7 +60,6 @@ func onReady() {
 			systray.Quit()
 		}
 	}()
-
 }
 
 func onExit() {

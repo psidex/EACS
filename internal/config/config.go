@@ -3,6 +3,7 @@ package config
 import (
 	"fmt"
 	"github.com/getlantern/systray"
+	"github.com/psidex/EACS/internal/icon"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -43,16 +44,25 @@ func GetUserConfigs(userConfigPath string) []*EApoConfig {
 }
 
 // WriteEAPOConfigToFile takes a path to the Equalizer APO config file and a slice of EApoConfig structs to write there
+// This function will also set the systray icon to the active state if any configs are active
 func WriteEAPOConfigToFile(pathToConfigFile string, configSlice []*EApoConfig) {
 	var completeData []byte
 	newline := []byte("\n")
+	anyItemsChecked := false
 
 	for _, config := range configSlice {
 		if config.MenuItem.Checked() {
+			anyItemsChecked = true
 			includeStatement := fmt.Sprintf(includeText, config.FileName)
 			completeData = append(completeData, []byte(includeStatement)...)
 			completeData = append(completeData, newline...)
 		}
+	}
+
+	if anyItemsChecked == true {
+		systray.SetIcon(icon.DataActive)
+	} else {
+		systray.SetIcon(icon.DataInactive)
 	}
 
 	err := ioutil.WriteFile(pathToConfigFile, completeData, 0644)
