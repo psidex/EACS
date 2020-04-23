@@ -9,7 +9,7 @@ import (
 )
 
 // GetUserConfigs takes a path to a directory and reads all the config files located there into EApoConfig structs
-func GetUserConfigs() []*EApoConfig {
+func GetUserConfigs() (userConfigs []*EApoConfig) {
 	var configSlice []*EApoConfig
 
 	files, err := ioutil.ReadDir(userConfigFileDir)
@@ -29,7 +29,7 @@ func GetUserConfigs() []*EApoConfig {
 
 // WriteEAPOConfigToFile takes a mutex and a slice of EApoConfig structs to write to the master config file. Returns
 // true if any configs were written, else false
-func WriteEAPOConfigToFile(writeMutex *sync.Mutex, configSlice []*EApoConfig) bool {
+func WriteEAPOConfigToFile(writeMutex *sync.Mutex, configSlice []*EApoConfig) (configsWritten bool) {
 	var completeData []byte
 	newline := []byte("\n")
 	anyActiveConfigs := false
@@ -44,18 +44,16 @@ func WriteEAPOConfigToFile(writeMutex *sync.Mutex, configSlice []*EApoConfig) bo
 	}
 
 	writeMutex.Lock()
-	err := ioutil.WriteFile(masterConfigFilePath, completeData, 0644)
-	writeMutex.Unlock()
-
-	if err != nil {
+	if err := ioutil.WriteFile(masterConfigFilePath, completeData, 0644); err != nil {
 		util.FatalError("Cannot write to master config file")
 	}
+	writeMutex.Unlock()
 
 	return anyActiveConfigs
 }
 
 // ReadEAPOConfigFromFile takes a path to the Equalizer APO config file and reads the names of the currently included config files
-func ReadEAPOConfigFromFile() []string {
+func ReadEAPOConfigFromFile() (fileNames []string) {
 	var currentConfigFileNames []string
 
 	includes, err := ioutil.ReadFile(masterConfigFilePath)
