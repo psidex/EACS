@@ -7,40 +7,36 @@ import (
 	"github.com/psidex/EACS/internal/icon"
 	"github.com/psidex/EACS/internal/util"
 	"strings"
-	"sync"
 )
 
 func onReady() {
-	systray.SetIcon(icon.DataInactive)
 	systray.SetTitle("EACS")
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
-	configWriteMutex := &sync.Mutex{}
-	userConfigs := config.GetUserConfigs()
-	currentConfigFileNames := config.ReadEAPOConfigFromFile()
-	startedWithActiveConfigs := false
+	anyConfigsLoaded := false
 
-	for _, configStruct := range userConfigs {
-		configName := strings.Replace(configStruct.FileName, ".txt", "", 1)
-		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
-		configStruct.MenuItem = btn
-
-		// If this config is already in the config master file
-		if util.Find(currentConfigFileNames, configStruct.FileName) {
-			btn.Check()
-			startedWithActiveConfigs = true
-		}
-
-		go func() {
-			for {
-				<-btn.ClickedCh
-				actions.ButtonClicked(btn, configWriteMutex, userConfigs)
-			}
-		}()
+	configController := config.NewController()
+	err := configController.LoadUserConfigs()
+	if err != nil {
+		util.FatalError(err.Error())
 	}
 
-	if startedWithActiveConfigs == true {
-		systray.SetIcon(icon.DataActive)
+	// This loop sets up the buttons for the user configs.
+	for fileName, configStruct := range configController.Configs {
+		configName := strings.Replace(fileName, ".txt", "", 1)
+		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
+
+		if configStruct.Active() {
+			btn.Check()
+			anyConfigsLoaded = true
+		}
+
+		go func(fileName string) {
+			for {
+				<-btn.ClickedCh
+				actions.ButtonClicked(btn, fileName, configController)
+			}
+		}(fileName)
 	}
 
 	systray.AddSeparator()
@@ -51,10 +47,16 @@ func onReady() {
 			systray.Quit()
 		}
 	}()
+
+	if anyConfigsLoaded {
+		systray.SetIcon(icon.DataActive)
+	} else {
+		systray.SetIcon(icon.DataInactive)
+	}
 }
 
 func onExit() {
-	// No cleanup needed
+	// No cleanup needed.
 }
 
 func main() {

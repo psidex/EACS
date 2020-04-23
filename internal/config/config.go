@@ -8,66 +8,102 @@ import (
 	"sync"
 )
 
-// GetUserConfigs takes a path to a directory and reads all the config files located there into EApoConfig structs
-func GetUserConfigs() (userConfigs []*EApoConfig) {
-	var configSlice []*EApoConfig
+const (
+	userConfigFileDir    = ".\\config-files"                 // The directory containing config files written by the user.
+	masterConfigFilePath = "..\\config.txt"                  // The "master" config file that is read by Equalizer APO.
+	includeText          = "Include: EACS\\config-files\\%s" // The default text that includes a file for Equalizer APO.
+)
 
-	files, err := ioutil.ReadDir(userConfigFileDir)
-	if err != nil {
-		util.FatalError("Cannot read EACS config file directory")
-	}
-
-	for _, file := range files {
-		if !file.IsDir() {
-			configStruct := EApoConfig{FileName: file.Name()}
-			configSlice = append(configSlice, &configStruct)
-		}
-	}
-
-	return configSlice
+// EApoConfig represents a config file created by the user.
+type EApoConfig struct {
+	includeText string // The text to be written to the master config.txt file.
+	active      bool   // If the config is currently active or not.
 }
 
-// WriteEAPOConfigToFile takes a mutex and a slice of EApoConfig structs to write to the master config file. Returns
-// true if any configs were written, else false
-func WriteEAPOConfigToFile(writeMutex *sync.Mutex, configSlice []*EApoConfig) (configsWritten bool) {
-	var completeData []byte
-	newline := []byte("\n")
-	anyActiveConfigs := false
-
-	for _, config := range configSlice {
-		if config.MenuItem.Checked() {
-			anyActiveConfigs = true
-			includeStatement := fmt.Sprintf(includeText, config.FileName)
-			completeData = append(completeData, []byte(includeStatement)...)
-			completeData = append(completeData, newline...)
-		}
-	}
-
-	writeMutex.Lock()
-	if err := ioutil.WriteFile(masterConfigFilePath, completeData, 0644); err != nil {
-		util.FatalError("Cannot write to master config file")
-	}
-	writeMutex.Unlock()
-
-	return anyActiveConfigs
+// Controller is the main controller for reading / writing configs.
+type Controller struct {
+	mutex   sync.Mutex
+	Configs map[string]*EApoConfig // [filename]struct.
 }
 
-// ReadEAPOConfigFromFile takes a path to the Equalizer APO config file and reads the names of the currently included config files
-func ReadEAPOConfigFromFile() (fileNames []string) {
-	var currentConfigFileNames []string
+// Active returns true / false depending on the state of the config.
+func (c *EApoConfig) Active() bool {
+	return c.active
+}
 
-	includes, err := ioutil.ReadFile(masterConfigFilePath)
+// toggleActive toggles the active field.
+func (c *EApoConfig) toggleActive() {
+	c.active = !c.active
+}
+
+// ToggleConfigActive toggles the `active` field for a given config.
+func (c *Controller) ToggleConfigActive(fileName string) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	// It is impossible to pass a fileName that isn't in the map so no need for err.
+	c.Configs[fileName].toggleActive()
+}
+
+// LoadUserConfigs populates the mc.Configs map with EApoConfig structs.
+func (c *Controller) LoadUserConfigs() error {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	masterConfigLines, err := readLinesFromMasterConfig()
 	if err != nil {
-		util.FatalError("Cannot read from master config file")
+		return err
 	}
 
-	lines := strings.Split(string(includes), "\n")
-	for _, line := range lines {
+	userConfigFiles, err := ioutil.ReadDir(userConfigFileDir)
+	if err != nil {
+		return err
+	}
+
+	var activeConfigFileNames []string
+
+	for _, line := range masterConfigLines {
 		parts := strings.Split(line, "\\")
 		fileName := parts[len(parts)-1]
-
-		currentConfigFileNames = append(currentConfigFileNames, fileName)
+		activeConfigFileNames = append(activeConfigFileNames, fileName)
 	}
 
-	return currentConfigFileNames
+	for _, file := range userConfigFiles {
+		if file.IsDir() {
+			continue
+		}
+		c.Configs[file.Name()] = &EApoConfig{
+			includeText: fmt.Sprintf(includeText, file.Name()),
+			active:      util.Find(activeConfigFileNames, file.Name()),
+		}
+	}
+
+	return nil
+}
+
+// WriteActiveConfigs writes the currently active user configs to Equalizer APOs config.txt file.
+// Returns variable that shows if any configs are active or not.
+func (c *Controller) WriteActiveConfigs() (allConfigsDisabled bool, err error) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	var includeTexts []string
+	allDisabled := true
+
+	for _, configStruct := range c.Configs {
+		if !configStruct.active {
+			continue
+		}
+		includeTexts = append(includeTexts, configStruct.includeText)
+		allDisabled = false
+	}
+
+	return allDisabled, writeLinesToMasterConfig(includeTexts)
+}
+
+// NewController creates a new Controller and initializes the config map.
+func NewController() *Controller {
+	var m Controller
+	m.Configs = make(map[string]*EApoConfig)
+	return &m
 }
