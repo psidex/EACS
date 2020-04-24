@@ -23,10 +23,10 @@ type EApoConfig struct {
 // Controller is the main controller for reading / writing configs.
 type Controller struct {
 	mutex   sync.Mutex
-	Configs map[string]*EApoConfig // [filename]struct.
+	configs map[string]*EApoConfig // [filename]struct.
 }
 
-// Active returns true / false depending on the state of the config.
+// Active is a getter for the EApoConfigs `active` field.
 func (c *EApoConfig) Active() bool {
 	return c.active
 }
@@ -36,16 +36,21 @@ func (c *EApoConfig) toggleActive() {
 	c.active = !c.active
 }
 
+// Configs is a getter for the Controllers `configs` field.
+func (c *Controller) Configs() map[string]*EApoConfig {
+	return c.configs
+}
+
 // ToggleConfigActive toggles the `active` field for a given config.
 func (c *Controller) ToggleConfigActive(fileName string) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	// It is impossible to pass a fileName that isn't in the map so no need for err.
-	c.Configs[fileName].toggleActive()
+	c.configs[fileName].toggleActive()
 }
 
-// LoadUserConfigs populates the mc.Configs map with EApoConfig structs.
+// LoadUserConfigs populates the mc.configs map with EApoConfig structs.
 func (c *Controller) LoadUserConfigs() error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
@@ -72,7 +77,7 @@ func (c *Controller) LoadUserConfigs() error {
 		if file.IsDir() {
 			continue
 		}
-		c.Configs[file.Name()] = &EApoConfig{
+		c.configs[file.Name()] = &EApoConfig{
 			includeText: fmt.Sprintf(includeText, file.Name()),
 			active:      util.Find(activeConfigFileNames, file.Name()),
 		}
@@ -90,7 +95,7 @@ func (c *Controller) WriteActiveConfigs() (allConfigsDisabled bool, err error) {
 	var includeTexts []string
 	allDisabled := true
 
-	for _, configStruct := range c.Configs {
+	for _, configStruct := range c.configs {
 		if !configStruct.active {
 			continue
 		}
@@ -104,6 +109,6 @@ func (c *Controller) WriteActiveConfigs() (allConfigsDisabled bool, err error) {
 // NewController creates a new Controller and initializes the config map.
 func NewController() *Controller {
 	var m Controller
-	m.Configs = make(map[string]*EApoConfig)
+	m.configs = make(map[string]*EApoConfig)
 	return &m
 }
