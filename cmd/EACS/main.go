@@ -32,7 +32,7 @@ func onReady() {
 	sort.Strings(sortedFileNames)
 
 	// Set up the buttons for the user created configs.
-	buttonPressedChan := make(chan string)
+	buttonClickedChan := make(chan string)
 	anyConfigsLoaded := false
 
 	for _, fileName := range sortedFileNames {
@@ -53,7 +53,7 @@ func onReady() {
 				} else {
 					btn.Uncheck()
 				}
-				buttonPressedChan <- fileName
+				buttonClickedChan <- fileName
 			}
 		}(fileName)
 	}
@@ -62,7 +62,7 @@ func onReady() {
 	// This also means that the iterative access to `configs` in the above loop remains safe.
 	go func() {
 		for {
-			actions.ButtonClicked(configController, <-buttonPressedChan)
+			actions.ButtonClicked(configController, <-buttonClickedChan)
 		}
 	}()
 
