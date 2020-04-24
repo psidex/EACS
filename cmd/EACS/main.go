@@ -61,7 +61,9 @@ func onReady() {
 	// The listener for button presses. This prevents multiple goroutines calling ButtonClicked at the same time.
 	// This also means that the iterative access to `configs` in the above loop remains safe.
 	go func() {
-		actions.ButtonClicked(configController, <-buttonPressedChan)
+		for {
+			actions.ButtonClicked(configController, <-buttonPressedChan)
+		}
 	}()
 
 	// Set the initial tray icon.
