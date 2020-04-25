@@ -50,7 +50,7 @@ func (c *Controller) ToggleConfigActive(fileName string) {
 	c.configs[fileName].toggleActive()
 }
 
-// LoadUserConfigs populates the mc.configs map with EApoConfig structs.
+// LoadUserConfigs populates the c.configs map with EApoConfig structs.
 func (c *Controller) LoadUserConfigs() error {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
