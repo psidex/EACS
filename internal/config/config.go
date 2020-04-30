@@ -5,7 +5,6 @@ import (
 	"github.com/psidex/EACS/internal/util"
 	"io/ioutil"
 	"strings"
-	"sync"
 )
 
 const (
@@ -22,7 +21,6 @@ type EApoConfig struct {
 
 // Controller is the main controller for reading / writing configs.
 type Controller struct {
-	mutex   sync.Mutex
 	configs map[string]*EApoConfig // [filename]struct.
 }
 
@@ -43,18 +41,12 @@ func (c *Controller) Configs() map[string]*EApoConfig {
 
 // ToggleConfigActive toggles the `active` field for a given config.
 func (c *Controller) ToggleConfigActive(fileName string) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
 	// It is impossible to pass a fileName that isn't in the map so no need for err.
 	c.configs[fileName].toggleActive()
 }
 
 // LoadUserConfigs populates the c.configs map with EApoConfig structs.
 func (c *Controller) LoadUserConfigs() error {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
 	masterConfigLines, err := readLinesFromMasterConfig()
 	if err != nil {
 		return err
@@ -70,6 +62,7 @@ func (c *Controller) LoadUserConfigs() error {
 	for _, line := range masterConfigLines {
 		parts := strings.Split(line, "\\")
 		fileName := parts[len(parts)-1]
+		// ToDo: Smarter parsing; check for includeText, check for name.ext, etc.
 		activeConfigFileNames = append(activeConfigFileNames, fileName)
 	}
 
@@ -89,9 +82,6 @@ func (c *Controller) LoadUserConfigs() error {
 // WriteActiveConfigs writes the currently active user configs to Equalizer APOs config.txt file.
 // Returns variable that shows if any configs are active or not.
 func (c *Controller) WriteActiveConfigs() (allConfigsDisabled bool, err error) {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-
 	var includeTexts []string
 	allDisabled := true
 

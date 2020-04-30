@@ -35,6 +35,7 @@ func OnReady() {
 	anyConfigsLoaded := false
 
 	for _, fileName := range sortedFileNames {
+		// ToDo: What if the files are .foo instead of .txt?
 		configName := strings.Replace(fileName, ".txt", "", 1)
 		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
 
@@ -57,8 +58,9 @@ func OnReady() {
 		}(fileName)
 	}
 
-	// The listener for button presses. This prevents multiple goroutines calling ButtonClicked at the same time.
-	// This also means that the iterative access to `configs` in the above loop remains safe.
+	// The listener for button presses.
+	// This prevents multiple goroutines calling ButtonClicked at the same time and also means that the iterative
+	// access to `configs` in the above loop remains safe (as configController is not thread safe).
 	go func() {
 		for {
 			actions.ButtonClicked(configController, <-buttonClickedChan)
