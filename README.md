@@ -38,6 +38,6 @@ The folder that contains all the configuration files will be located at `Equaliz
 
 See [the user guide](./GUIDE.md) for more detailed information.
 
-# Credit
+## Credit
 
 Icon is the [Control Knobs](https://emojipedia.org/control-knobs/) emoji from [Twitter](https://twemoji.twitter.com/).
