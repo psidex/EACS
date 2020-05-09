@@ -20,11 +20,10 @@ func OnReady() {
 		util.FatalError(err.Error())
 	}
 
-	// Get all user configs and sort them by file name.
-	var sortedFileNames []string
-	// All of the reads to configs happen before the goroutine is started that handles button presses (thread safety!).
 	configs := configController.Configs()
 
+	// Get all user configs and sort them by file name.
+	var sortedFileNames []string
 	for fileName, _ := range configs {
 		sortedFileNames = append(sortedFileNames, fileName)
 	}
