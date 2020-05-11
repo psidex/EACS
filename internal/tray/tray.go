@@ -10,6 +10,7 @@ import (
 	"strings"
 )
 
+// OnReady is the function to be called when the application is ready to run.
 func OnReady() {
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
@@ -24,7 +25,7 @@ func OnReady() {
 
 	// Get all user configs and sort them by file name.
 	var sortedFileNames []string
-	for fileName, _ := range configs {
+	for fileName := range configs {
 		sortedFileNames = append(sortedFileNames, fileName)
 	}
 	sort.Strings(sortedFileNames)
@@ -58,7 +59,6 @@ func OnReady() {
 	}
 
 	// The listener for button presses.
-	// This prevents multiple goroutines calling ButtonClicked at the same time and also means that the iterative
 	// access to `configs` in the above loop remains safe (as configController is not thread safe).
 	go func() {
 		for {
@@ -84,6 +84,7 @@ func OnReady() {
 	}()
 }
 
+// OnExit is the function to be called when the application exits.
 func OnExit() {
 	// No cleanup needed.
 }
