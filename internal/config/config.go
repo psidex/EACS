@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/psidex/EACS/internal/util"
 	"io/ioutil"
-	"strings"
 )
 
 const (
@@ -60,10 +59,11 @@ func (c *Controller) LoadUserConfigs() error {
 	var activeConfigFileNames []string
 
 	for _, line := range masterConfigLines {
-		parts := strings.Split(line, "\\")
-		fileName := parts[len(parts)-1]
-		// ToDo: Smarter parsing; check for includeText, check for name.ext, etc.
-		activeConfigFileNames = append(activeConfigFileNames, fileName)
+		fileName, err := ParseIncludeText(line)
+		if err == nil {
+			// No error parsing a filename so append it.
+			activeConfigFileNames = append(activeConfigFileNames, fileName)
+		}
 	}
 
 	for _, file := range userConfigFiles {

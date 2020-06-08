@@ -35,7 +35,6 @@ func OnReady() {
 	anyConfigsLoaded := false
 
 	for _, fileName := range sortedFileNames {
-		// ToDo: What if the files are .foo instead of .txt?
 		configName := strings.Replace(fileName, ".txt", "", 1)
 		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
 
