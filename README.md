@@ -1,4 +1,4 @@
-# 🎛️ EACS - Equalizer APO Config Switcher
+# EACS - Equalizer APO Config Switcher
 
 [![Build status](https://github.com/psidex/EACS/workflows/Go%20Build/badge.svg)](https://github.com/psidex/EACS/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/psidex/EACS)](https://goreportcard.com/report/github.com/psidex/EACS)
