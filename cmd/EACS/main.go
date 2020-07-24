@@ -6,5 +6,5 @@ import (
 )
 
 func main() {
-	systray.Run(tray.OnReady, tray.OnExit)
+	systray.Run(tray.OnReady, nil)
 }

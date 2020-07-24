@@ -1,17 +1,22 @@
 package tray
 
 import (
+	"sort"
+	"strings"
+
 	"github.com/getlantern/systray"
 	"github.com/psidex/EACS/internal/actions"
 	"github.com/psidex/EACS/internal/config"
 	"github.com/psidex/EACS/internal/icon"
 	"github.com/psidex/EACS/internal/util"
-	"sort"
-	"strings"
 )
 
 // OnReady is the function to be called when the application is ready to run.
 func OnReady() {
+	// systray has an issue on Windows that causes errors to happen if you call methods before setting the icon.
+	// To fix this the first thing that happens in OnReady is settings the icon.
+	// https://github.com/getlantern/systray/issues/158
+	systray.SetIcon(icon.DataInactive)
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
 	// Create the config controller and load the user configs.
@@ -65,11 +70,9 @@ func OnReady() {
 		}
 	}()
 
-	// Set the initial tray icon.
+	// If we loaded configs, set to the active icon.
 	if anyConfigsLoaded {
 		systray.SetIcon(icon.DataActive)
-	} else {
-		systray.SetIcon(icon.DataInactive)
 	}
 
 	// Add the last menu bits.
@@ -81,9 +84,4 @@ func OnReady() {
 			systray.Quit()
 		}
 	}()
-}
-
-// OnExit is the function to be called when the application exits.
-func OnExit() {
-	// No cleanup needed.
 }
