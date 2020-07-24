@@ -10,7 +10,7 @@ require (
 	github.com/lxn/walk v0.0.0-20191113135339-bf589de20b3c // indirect
 	github.com/lxn/win v0.0.0-20191106123917-121afc750dd3 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
-	golang.org/x/sys v0.0.0-20200722175500-76b94024e4b6 // indirect
+	golang.org/x/sys v0.0.0-20200724161237-0e2f3a69832c // indirect
 	gopkg.in/Knetic/govaluate.v3 v3.0.0 // indirect
-	tawesoft.co.uk/go/dialog v0.0.0-20200408232309-1bfa926f8a55
+	tawesoft.co.uk/go/dialog v0.0.0-20200717203631-ec5d7de51a69
 )
