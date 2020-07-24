@@ -18,7 +18,8 @@ type EApoConfig struct {
 	active      bool   // If the config is currently active or not.
 }
 
-// Controller is the main controller for reading / writing configs.
+// Controller provides an abstraction layer for interacting the config files.
+// Any actual interaction with the fs must happen within this struct.
 type Controller struct {
 	configs map[string]*EApoConfig // [filename]struct.
 }
@@ -58,14 +59,15 @@ func (c *Controller) LoadUserConfigs() error {
 
 	var activeConfigFileNames []string
 
+	// Parse all configs being used in master file.
 	for _, line := range masterConfigLines {
-		fileName, err := ParseIncludeText(line)
-		if err == nil {
+		if fileName, err := ParseIncludeText(line); err == nil {
 			// No error parsing a filename so append it.
 			activeConfigFileNames = append(activeConfigFileNames, fileName)
 		}
 	}
 
+	// Populate c.configs and set to active if found in master file.
 	for _, file := range userConfigFiles {
 		if file.IsDir() {
 			continue
@@ -81,24 +83,24 @@ func (c *Controller) LoadUserConfigs() error {
 
 // WriteActiveConfigs writes the currently active user configs to Equalizer APOs config.txt file.
 // Returns variable that shows if any configs are active or not.
-func (c *Controller) WriteActiveConfigs() (allConfigsDisabled bool, err error) {
+func (c *Controller) WriteActiveConfigs() (noActiveConfigs bool, err error) {
 	var includeTexts []string
-	allDisabled := true
+	noActiveConfigs = true
 
 	for _, configStruct := range c.configs {
 		if !configStruct.active {
 			continue
 		}
 		includeTexts = append(includeTexts, configStruct.includeText)
-		allDisabled = false
+		noActiveConfigs = false
 	}
 
-	return allDisabled, writeLinesToMasterConfig(includeTexts)
+	return noActiveConfigs, writeLinesToMasterConfig(includeTexts)
 }
 
 // NewController creates a new Controller and initializes the config map.
 func NewController() *Controller {
-	var m Controller
-	m.configs = make(map[string]*EApoConfig)
-	return &m
+	return &Controller{
+		make(map[string]*EApoConfig),
+	}
 }

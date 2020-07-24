@@ -21,11 +21,9 @@ func OnReady() {
 
 	// Create the config controller and load the user configs.
 	configController := config.NewController()
-	err := configController.LoadUserConfigs()
-	if err != nil {
+	if err := configController.LoadUserConfigs(); err != nil {
 		util.FatalError(err.Error())
 	}
-
 	configs := configController.Configs()
 
 	// Get all user configs and sort them by file name.
