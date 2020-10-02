@@ -25,27 +25,27 @@ func NewDataController(fileName string) (*DataController, error) {
 	return d, err
 }
 
-// A getter for appData.AllowMultiple.
+// AllowMultiple is a getter for appData.AllowMultiple.
 func (d DataController) AllowMultiple() bool {
 	return d.appData.AllowMultiple
 }
 
-// A setter for appData.AllowMultiple.
+// SetAllowMultiple is a setter for appData.AllowMultiple.
 func (d *DataController) SetAllowMultiple(allowMultiple bool) {
 	d.appData.AllowMultiple = allowMultiple
 }
 
-// A getter for appData.ActiveConfigFileNames.
+// ActiveConfigFileNames is a getter for appData.ActiveConfigFileNames.
 func (d DataController) ActiveConfigFileNames() []string {
 	return d.appData.ActiveConfigFileNames
 }
 
-// Append a config file name to appData.ActiveConfigFileNames.
+// AddActiveConfigFileName appends a config file name to appData.ActiveConfigFileNames.
 func (d *DataController) AddActiveConfigFileName(fileName string) {
 	d.appData.ActiveConfigFileNames = append(d.appData.ActiveConfigFileNames, fileName)
 }
 
-// Remove a config file name from appData,ActiveConfigFileNames,
+// RemoveActiveConfigFileName removes a config file name from appData,ActiveConfigFileNames,
 func (d *DataController) RemoveActiveConfigFileName(fileName string) {
 	// https://stackoverflow.com/a/34070691/6396652
 	for i, v := range d.appData.ActiveConfigFileNames {

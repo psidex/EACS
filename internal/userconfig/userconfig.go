@@ -28,6 +28,7 @@ func WriteIncludesToMainConfig(configFileNames []string) error {
 	return nil
 }
 
+// GetAllUserConfigFileNames returns all of the stored user config file names.
 func GetAllUserConfigFileNames() ([]string, error) {
 	var userConfigFileNames []string
 
