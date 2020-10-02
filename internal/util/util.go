@@ -17,7 +17,7 @@ func Find(slice []string, val string) (stringFound bool) {
 }
 
 // FatalError shows an alert box to the user and exits the program with code 1.
-func FatalError(errMsg string) {
-	dialog.Alert("EACS Fatal Error\n%s", errMsg)
+func FatalError(err error) {
+	dialog.Alert("EACS Fatal Error\n%s", err)
 	os.Exit(1)
 }

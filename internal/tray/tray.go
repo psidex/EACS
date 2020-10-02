@@ -1,15 +1,17 @@
 package tray
 
 import (
+	"github.com/getlantern/systray"
+	"github.com/psidex/EACS/internal/appdata"
+	"github.com/psidex/EACS/internal/buttons"
+	"github.com/psidex/EACS/internal/icon"
+	"github.com/psidex/EACS/internal/userconfig"
+	"github.com/psidex/EACS/internal/util"
 	"sort"
 	"strings"
-
-	"github.com/getlantern/systray"
-	"github.com/psidex/EACS/internal/actions"
-	"github.com/psidex/EACS/internal/config"
-	"github.com/psidex/EACS/internal/icon"
-	"github.com/psidex/EACS/internal/util"
 )
+
+const saveDataPath = ".\\data.gob"
 
 // OnReady is the function to be called when the application is ready to run.
 func OnReady() {
@@ -19,67 +21,60 @@ func OnReady() {
 	systray.SetIcon(icon.DataInactive)
 	systray.SetTooltip("Equalizer APO Config Switcher")
 
-	// Create the config controller and load the user configs.
-	configController := config.NewController()
-	if err := configController.LoadUserConfigs(); err != nil {
-		util.FatalError(err.Error())
+	dc, err := appdata.NewDataController(saveDataPath)
+	if err != nil {
+		util.FatalError(err)
 	}
-	configs := configController.Configs()
 
-	// Get all user configs and sort them by file name.
-	var sortedFileNames []string
-	for fileName := range configs {
-		sortedFileNames = append(sortedFileNames, fileName)
+	allConfigFileNames, err := userconfig.GetAllUserConfigFileNames()
+	if err != nil {
+		util.FatalError(err)
 	}
-	sort.Strings(sortedFileNames)
+	sort.Strings(allConfigFileNames)
 
-	// Set up the buttons for the user created configs.
-	buttonClickedChan := make(chan string)
-	anyConfigsLoaded := false
+	initialActiveConfigFileNames := dc.ActiveConfigFileNames()
 
-	for _, fileName := range sortedFileNames {
+	var allButtons []*systray.MenuItem
+
+	// Channels for passing data to the ConfigButtonsReceiverLoop.
+	fileNameChan := make(chan string)
+	menuItemChan := make(chan *systray.MenuItem)
+
+	for _, fileName := range allConfigFileNames {
 		configName := strings.Replace(fileName, ".txt", "", 1)
 		btn := systray.AddMenuItem(configName, "Activate / Deactivate this config")
+		allButtons = append(allButtons, btn)
 
-		configStruct := configs[fileName]
-		if configStruct.Active() {
+		if util.Find(initialActiveConfigFileNames, fileName) {
 			btn.Check()
-			anyConfigsLoaded = true
 		}
 
 		go func(fileName string) {
 			for {
 				<-btn.ClickedCh
-				if !btn.Checked() {
-					btn.Check()
-				} else {
-					btn.Uncheck()
-				}
-				buttonClickedChan <- fileName
+				fileNameChan <- fileName
+				menuItemChan <- btn
 			}
 		}(fileName)
 	}
 
-	// The listener for button presses.
-	// access to `configs` in the above loop remains safe (as configController is not thread safe).
-	go func() {
-		for {
-			actions.ButtonClicked(configController, <-buttonClickedChan)
-		}
-	}()
-
-	// If we loaded configs, set to the active icon.
-	if anyConfigsLoaded {
-		systray.SetIcon(icon.DataActive)
-	}
-
 	// Add the last menu bits.
 	systray.AddSeparator()
-	QuitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
-	go func() {
-		for {
-			<-QuitBtn.ClickedCh
-			systray.Quit()
-		}
-	}()
+	allowMultipleBtn := systray.AddMenuItem("Allow Multiple", "")
+	quitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
+
+	if dc.AllowMultiple() {
+		allowMultipleBtn.Check()
+	}
+
+	// Having a single handler for button presses means we don't have to worry about concurrent file access.
+	go buttons.ConfigButtonsReceiverLoop(fileNameChan, menuItemChan, dc, allButtons)
+
+	go buttons.AllowMultipleHandler(allowMultipleBtn, dc)
+	go buttons.QuitButtonHandler(quitBtn)
+
+	// If we have active configs, set to the active icon.
+	if len(initialActiveConfigFileNames) > 0 {
+		systray.SetIcon(icon.DataActive)
+	}
 }
