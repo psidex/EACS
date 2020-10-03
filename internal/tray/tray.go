@@ -16,7 +16,7 @@ const saveDataPath = ".\\data.gob"
 // OnReady is the function to be called when the application is ready to run.
 func OnReady() {
 	// systray has an issue on Windows that causes errors to happen if you call methods before setting the icon.
-	// To fix this the first thing that happens in OnReady is settings the icon.
+	// To fix this the first thing that happens in OnReady is setting the icon.
 	// https://github.com/getlantern/systray/issues/158
 	systray.SetIcon(icon.DataInactive)
 	systray.SetTooltip("Equalizer APO Config Switcher")
@@ -60,17 +60,20 @@ func OnReady() {
 
 	// Add the last menu bits.
 	systray.AddSeparator()
-	allowMultipleBtn := systray.AddMenuItem("Allow Multiple", "")
+	allowMultipleBtn := systray.AddMenuItem("Allow Multiple", "Allows only a single configuration to be active")
+	uncheckAllBtn := systray.AddMenuItem("Uncheck All", "Unchecks all configurations")
+	systray.AddSeparator()
 	quitBtn := systray.AddMenuItem("Quit", "Quit the whole app")
 
 	if dc.AllowMultiple() {
 		allowMultipleBtn.Check()
 	}
 
-	// Having a single handler for button presses means we don't have to worry about concurrent file access.
+	// Having a single handler for config button presses means we don't have to worry about concurrent file access.
 	go buttons.ConfigButtonsReceiverLoop(fileNameChan, menuItemChan, dc, allButtons)
 
 	go buttons.AllowMultipleHandler(allowMultipleBtn, dc)
+	go buttons.UncheckAllHandler(uncheckAllBtn, dc, allButtons)
 	go buttons.QuitButtonHandler(quitBtn)
 
 	// If we have active configs, set to the active icon.
