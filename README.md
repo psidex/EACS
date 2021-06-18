@@ -2,8 +2,7 @@
 
 [![Build status](https://github.com/psidex/EACS/workflows/Go%20Build/badge.svg)](https://github.com/psidex/EACS/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/psidex/EACS)](https://goreportcard.com/report/github.com/psidex/EACS)
-[![Ko-fi donate link](https://img.shields.io/badge/Donate-Coffee-orange.svg?style=flat&colorA=35383d)](https://ko-fi.com/M4M18XB1)
-[![Ethereum donate link](https://img.shields.io/badge/Donate-Ether-5965a2.svg?style=flat&colorA=35383d)](https://etherscan.io/address/0x54A8Fe0C28B9DD4940266A78d70f11B621735A97)
+[![buymeacoffee donate link](https://img.shields.io/badge/Donate-Beer-FFDD00.svg?style=flat&colorA=35383d)](https://www.buymeacoffee.com/psidex)
 
 A small Windows tray app that allows you to quickly switch between using different [Equalizer APO](https://sourceforge.net/projects/equalizerapo/) configuration files.
 
